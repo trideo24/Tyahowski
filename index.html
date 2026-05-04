@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DapurNusantara - Bahan & Alat Masak</title>
+    <style>
+        /* Variabel Warna untuk Tema Kuliner */
+        :root {
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --primary-color: #e67e22; /* Warna Oranye Labu */
+            --accent-color: #c0392b; /* Warna Merah Cabai */
+            --nav-bg: #2d3436;
+            --nav-text: #ffffff;
+            --desc-color: #666;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-color: #f4f4f4;
+            --nav-bg: #000000;
+            --primary-color: #f39c12;
+            --desc-color: #bbb;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: 0.3s;
+        }
+
+        /* Navigasi */
+        nav {
+            background-color: var(--nav-bg);
+            padding: 1rem 3%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            flex-wrap: wrap; /* Agar menu tidak pecah di layar kecil */
+        }
+
+        .nav-links a {
+            color: var(--nav-text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Profil / Login */
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            color: var(--nav-text);
+        }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+            background-color: #95a5a6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            border: 2px solid #fff;
+        }
+
+        /* Toggle Tema */
+        .theme-switch {
+            cursor: pointer;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid #fff;
+            background: transparent;
+            color: #fff;
+            font-size: 0.75rem;
+            transition: 0.2s;
+        }
+
+        .theme-switch:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Grid Produk */
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* EFEK MENGAMBANG (Hover) */
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+        }
+
+        /* EFEK MEMBAL (Click Bobbing) */
+        .bob-effect {
+            animation: bobbing 0.4s ease-out;
+        }
+
+        @keyframes bobbing {
+            0% { transform: translateY(-10px) scale(1); }
+            30% { transform: translateY(-10px) scale(0.92); }
+            60% { transform: translateY(-10px) scale(1.05); }
+            100% { transform: translateY(-10px) scale(1); }
+        }
+
+        /* Foto 1:1 */
+        .card img {
+            width: 100%;
+            aspect-ratio: 1 / 1; 
+            object-fit: cover; 
+            display: block;
+        }
+
+        .card-content {
+            padding: 15px;
+            flex-grow: 1;
+        }
+
+        .card-content h3 {
+            margin: 10px 0 5px 0;
+            font-size: 1.15rem;
+            color: var(--primary-color);
+        }
+
+        .description {
+            font-size: 0.85rem;
+            color: var(--desc-color);
+            margin-bottom: 12px;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .info-row {
+            margin: 5px 0;
+            font-size: 0.85rem;
+        }
+
+        .price-tag {
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            display: block;
+        }
+
+        .badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+    </style>
+</head>
+<body>
+
+<nav>
+    <div style="color: white; font-weight: bold; font-size: 1.2rem; margin-right: 20px;">🍳 SIOKKU</div>
+    
+    <ul class="nav-links">
+        <li><a href="#">Beranda</a></li>
+        <li><a href="#">Hewan</a></li>
+        <li><a href="#">Sayur</a></li>
+        <li><a href="#">Rempah</a></li>
+        <li><a href="#">Buah</a></li>
+        <li><a href="#">Alat Masak</a></li>
+        <li><a href="#">Koki</a></li>
+        <li><a href="#">Resep</a></li>
+    </ul>
+
+    <div class="nav-right">
+        <button class="theme-switch" onclick="toggleTheme()" id="themeBtn">🌓 Mode Gelap</button>
+        
+        <div class="profile-section" id="profileArea">
+            <span id="loginText" style="font-size: 0.9rem;">Login</span>
+            <div class="avatar">?</div>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h2 id="sectionTitle">Katalog Dapur Terkini</h2>
+    
+    <div class="grid">
+        <div class="card" onclick="applyBob(this)">
+            <img src="paket kunit organik.jpg" alt="Rempah">
+            <div class="card-content">
+                <span class="badge">Rempah</span>
+                <h3>Paket Kunyit Organik</h3>
+                <p class="description">Kunyit segar pilihan, hasil panen petani lokal tanpa pestisida.</p>
+                <div class="info-row"><b>Berat:</b> 500 Gram</div>
+                <div class="info-row"><b>Lokasi:</b> Solo, Jateng</div>
+                <span class="price-tag">Rp 15.000</span>
+            </div>
+        </div>
+
+        <div class="card" onclick="applyBob(this)">
+            <img src="wajan cast iron.jpg" alt="Wajan">
+            <div class="card-content">
+                <span class="badge">Alat Masak</span>
+                <h3>Wajan Cast Iron 24cm</h3>
+                <p class="description">Anti lengket alami, tahan lama, dan mendistribusikan panas secara merata.</p>
+                <div class="info-row"><b>Bahan:</b> Besi Cor</div>
+                <div class="info-row"><b>Lokasi:</b> Jakarta Barat</div>
+                <span class="price-tag">Rp 245.000</span>
+            </div>
+        </div>
+
+        <div class="card" onclick="applyBob(this)">
+            <img src="paprika.jpg" alt="Sayur">
+            <div class="card-content">
+                <span class="badge">Sayur</span>
+                <h3>Paprika Pelangi Fresh</h3>
+                <p class="description">Kombinasi warna merah, kuning, dan hijau yang kaya vitamin.</p>
+                <div class="info-row"><b>Isi:</b> 3 Buah</div>
+                <div class="info-row"><b>Lokasi:</b> Lembang, Bandung</div>
+                <span class="price-tag">Rp 45.000</span>
+            </div>
+        </div>
+
+        <div class="card" onclick="applyBob(this)">
+            <img src="sapiderman.jpg" alt="Daging">
+            <div class="card-content">
+                <span class="badge">Hewan</span>
+                <h3>Wagyu Beef Slice A5</h3>
+                <p class="description">Daging sapi kualitas premium dengan marbling sempurna untuk shabu-shabu.</p>
+                <div class="info-row"><b>Berat:</b> 250 Gram</div>
+                <div class="info-row"><b>Lokasi:</b> Surabaya</div>
+                <span class="price-tag">Rp 195.000</span>
+            </div>
+        </div>
+        <div class="card" onclick="applyBob(this)">
+            <img src="chef amba 1.jpg" alt="Chef Amba">
+            <div class="card-content">
+                <span class="badge">Koki</span>
+                <h3>Chef Amba (Mentor Eksklusif)</h3>
+                <p class="description">Ahli dalam teknik memasak ekspresif dan motivasi dapur tingkat tinggi.</p>
+                <div class="info-row"><b>Layanan:</b> Konsultasi Privat</div>
+                <div class="info-row"><b>Rating:</b> ⭐ 5.0 (Ambatron Approved)</div>
+                <span class="price-tag">Rp 1.945.000 / Sesi</span>
+    </div>
+</div>
+    </div>
+</div>
+        
+
+<script>
+    function toggleTheme() {
+        const body = document.body;
+        const btn = document.getElementById('themeBtn');
+        
+        if (body.getAttribute('data-theme') === 'dark') {
+            body.removeAttribute('data-theme');
+            btn.innerText = "🌓 Mode Gelap";
+        } else {
+            body.setAttribute('data-theme', 'dark');
+            btn.innerText = "☀️ Mode Terang";
+        }
+    }
+
+    function applyBob(element) {
+        element.classList.add('bob-effect');
+        setTimeout(() => {
+            element.classList.remove('bob-effect');
+        }, 400);
+    }
+
+    // Simulasi Login
+    let is_logged_in = false; 
+
+    if (is_logged_in) {
+        document.getElementById('loginText').innerText = "Chef Juna";
+        document.querySelector('.avatar').innerText = "CJ";
+        document.querySelector('.avatar').style.backgroundColor = "#e67e22";
+    }
+</script>
+
+</body>
+</html>
